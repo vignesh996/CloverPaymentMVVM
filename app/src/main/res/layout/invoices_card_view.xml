@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="6dp"
+    android:layout_margin="5dp"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="8dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/tv_customerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CUSTOMER NAME :"
+            android:layout_marginLeft="11dp"
+            android:textSize="15dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/customer_name"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="vignesh"
+            android:textSize="15dp"
+            android:layout_marginLeft="10dp"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="55dp"
+        android:padding="5dp">
+        <TextView
+            android:id="@+id/tv_customerId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CUSTOMER ID : "
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="11dp"/>
+        <TextView
+            android:id="@+id/customer_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="14521"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/tv_uniqueId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ORDER ID : "
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="100dp"/>
+        <TextView
+            android:id="@+id/unique_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="54698723155"
+            android:textSize="15dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="79dp"
+        android:padding="5dp"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/tv_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AMOUNT : "
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="11dp"/>
+        <TextView
+            android:id="@+id/invoice_amount"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="2000"
+            android:textSize="15dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$"
+            android:textSize="15dp"/>
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="STATUS : "
+            android:layout_marginLeft="118dp"
+            android:textSize="15dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/payment_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OPEN"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/Sandal"/>
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

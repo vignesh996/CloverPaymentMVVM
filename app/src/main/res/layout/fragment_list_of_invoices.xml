@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="listOfInvoicesViewModel"
+            type="com.example.mycloverpayment.listofinvoices.ListOfInvoicesViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".listofinvoices.ListOfInvoices"
+        android:background="@color/teal_700">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="162dp"
+            tools:layout_editor_absoluteY="263dp"
+            tools:listitem="@layout/invoices_card_view"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
