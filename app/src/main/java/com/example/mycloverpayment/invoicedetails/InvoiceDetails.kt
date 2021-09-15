@@ -142,6 +142,7 @@ class InvoiceDetails : Fragment() {
         var customLineItem = LineItem().apply {
             price = details.amount
             note = "Payment Made by Vignesh"
+            this.name = details.customerName
         }
         orderConnector!!.addCustomLineItem(details.uniqueId, customLineItem, false)
     }
@@ -161,9 +162,7 @@ class InvoiceDetails : Fragment() {
     private fun checkPaymentState(intent: Intent, myOrder: Order, details: PaymentOrder) {
         if (myOrder.hasPaymentState()) {
             if (myOrder.paymentState == PaymentState.PAID) {
-                Log.d("TAG", "connectToCloverPayment one: payment paid already")
             } else if (mOrder.paymentState == PaymentState.OPEN || mOrder.paymentState == PaymentState.PARTIALLY_PAID) {
-                Log.d("TAG", "connectToCloverPayment one: payment open state")
                 resultLauncher.launch(intent)
             }
         }else {
@@ -181,14 +180,24 @@ class InvoiceDetails : Fragment() {
 
                var orderDetail = orderConnector!!.getOrder(invoiceDetail.uniqueId)
 
+                Log.d("TAG", "Cash Payment  ${orderDetail.payments}")
                 if (orderDetail.payments.get(0).tender.label == "Cash"){
                       orderDetail.clearPayments()
                     orderDetail.clearState()
                     Log.d("TAG", "Cash Payment not allowed ")
 
-                }else if (orderDetail.payments.get(0).tender.label == "Card"){
+                }else if (orderDetail.payments.get(0).tender.label == "Credit Card"){
+                    Log.d("TAG", "Cash Payment done by Credit card ")
 
+                    if (orderDetail.hasPaymentState()){
+                        Log.d("TAG", "Cash Payment done by Credit card hasPaymentState")
+                        if (orderDetail.paymentState == PaymentState.PAID) {
 
+                            Log.d("TAG", "Cash Payment done by Credit card fully paid")
+                        }else if (orderDetail.paymentState == PaymentState.OPEN || orderDetail.paymentState == PaymentState.PARTIALLY_PAID) {
+                            Log.d("TAG", "Cash Payment done by Credit card partially paid")
+                        }
+                    }
                 }
 
             }
