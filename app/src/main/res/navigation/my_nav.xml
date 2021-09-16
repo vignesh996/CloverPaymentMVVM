@@ -3,29 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_nav"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/listOfInvoices">
 
-    <fragment
-        android:id="@+id/invoiceDetails"
-        android:name="com.example.mycloverpayment.invoicedetails.InvoiceDetails"
-        android:label="fragment_invoice_details"
-        tools:layout="@layout/fragment_invoice_details" >
-        <action
-            android:id="@+id/action_invoiceDetails_to_listOfInvoices"
-            app:destination="@id/listOfInvoices" />
-    </fragment>
     <fragment
         android:id="@+id/listOfInvoices"
         android:name="com.example.mycloverpayment.listofinvoices.ListOfInvoices"
         android:label="fragment_list_of_invoices"
         tools:layout="@layout/fragment_list_of_invoices" />
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.mycloverpayment.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_homeFragment_to_invoiceDetails"
-            app:destination="@id/invoiceDetails" />
-    </fragment>
 </navigation>

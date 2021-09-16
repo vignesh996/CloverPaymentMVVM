@@ -6,6 +6,15 @@ plugins {
 }
 
 android {
+
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\P Vigneshwaran\\paymentAppKeyStore\\paymentAppKeyStore.jks')
+            storePassword 'vignesh#P996'
+            keyAlias 'key0'
+            keyPassword 'vignesh#P996'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion '30.0.3'
 
@@ -19,6 +28,23 @@ android {
         buildConfigField "String", "RAID", "\"J3HG8P5ZJDRPA.Z70ZEZC3A2ABR\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        flavorDimensions 'default'
+        productFlavors {
+          officeMailId{
+              applicationId "com.example.clover"
+              versionCode 5
+              versionName "5.0"
+              buildConfigField "String", "RAID", "\"J3HG8P5ZJDRPA.Z70ZEZC3A2ABR\""
+          }
+           personalMailId {
+                applicationId "com.example.payment"
+                versionCode 5
+                versionName "5.0"
+                buildConfigField "String", "RAID", "\"2EY2DTHBTBN0C.TQZX2FRVBPRKT\""
+
+            }
+        }
     }
     buildFeatures {
         dataBinding true
@@ -27,6 +53,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
