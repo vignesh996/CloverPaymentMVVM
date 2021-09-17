@@ -173,56 +173,47 @@ class ListOfInvoices : Fragment(), InvoicesAdapter.OnServiceClickListener {
         var customerId = invoiceList[position].customerId
         var amount = invoiceList[position].amount
         var paymentStatus = invoiceList[position].paymentStatus
-        var invoiceDetails =  PaymentOrder(uniqueId,customerName,customerId,amount,paymentStatus,"")
+        var cloverOrderId = invoiceList[position].cloverOrderId
+
+        var invoiceDetails =  PaymentOrder(uniqueId,customerName,customerId,amount,paymentStatus,cloverOrderId)
 
         GlobalScope.launch(Dispatchers.Main) {
             var detail = lunchBackgroundThread(invoiceDetails,position)
             RxBus.publish(RxBusEvent.PaymentId(detail,position))
-            adapter.refreshItems(invoicesList)
         }
     }
 
     suspend fun lunchBackgroundThread(invoiceDetails: PaymentOrder, position: Int): PaymentOrder {
 
         return withContext(Dispatchers.IO) {
-            var details = createOrder(invoiceDetails)
             invoiceDetail = invoiceDetails
             invoicePosition = position
+            var details = createOrder(invoiceDetails,position)
             return@withContext details
         }
     }
 
-    private fun createOrder(details: PaymentOrder): PaymentOrder {
-
+    private fun createOrder(details: PaymentOrder, position: Int): PaymentOrder {
 
         if (details.cloverOrderId.isNullOrEmpty()){
             mOrder = orderConnector!!.createOrder(Order())
             mOrder.setPayType(PayType.FULL)
+            details.uniqueId = mOrder.id
             details.cloverOrderId = mOrder.id
-
-            checkOrderId(details)
+            setCloverOrderId(details,position)
             addCustomLineItem(details)
-//            connectToCloverPaymentPage(details)
-
         }else{
-            mOrder= orderConnector!!.getOrder(details.cloverOrderId)
+            mOrder= orderConnector!!.getOrder(details.uniqueId)
         }
         connectToCloverPaymentPage(details)
 
         return details
     }
 
-    private fun checkOrderId(details: PaymentOrder) {
-
-        for (i in 0..invoicesList.size-1){
-            if (invoicesList[i].uniqueId == details.uniqueId){
-                invoicesList[i].cloverOrderId = details.cloverOrderId
-                Log.d("TAG", "checkOrderId: ${invoicesList[i].cloverOrderId}")
-
-                break
-            }
-        }
+    private  fun setCloverOrderId(details: PaymentOrder, position: Int) {
+     invoicesList[position].cloverOrderId = details.cloverOrderId
     }
+
 
     private fun addCustomLineItem(details: PaymentOrder) {
         var customLineItem = LineItem().apply {
@@ -230,14 +221,14 @@ class ListOfInvoices : Fragment(), InvoicesAdapter.OnServiceClickListener {
             note = "Payment Made by Vignesh"
             this.name = details.customerName
         }
-        orderConnector!!.addCustomLineItem(details.cloverOrderId, customLineItem, false)
+        orderConnector!!.addCustomLineItem(details.uniqueId, customLineItem, false)
     }
 
     private fun connectToCloverPaymentPage(details: PaymentOrder) {
         Intent(Intents.ACTION_CLOVER_PAY).apply {
-            this.putExtra(Intents.EXTRA_ORDER_ID, details.cloverOrderId)
+            this.putExtra(Intents.EXTRA_ORDER_ID, details.uniqueId)
             this.putExtra(Intents.EXTRA_CARD_ENTRY_METHODS, cardEntryMethodsAllowed)
-            var myOrder = orderConnector!!.getOrder(details.cloverOrderId)
+            var myOrder = orderConnector!!.getOrder(details.uniqueId)
 
             checkPaymentState(this, myOrder, details)
 
@@ -274,7 +265,7 @@ class ListOfInvoices : Fragment(), InvoicesAdapter.OnServiceClickListener {
     suspend fun getOrderPaymentState(): InvoiceUpdate? {
 
         return withContext(Dispatchers.IO) {
-            var orderDetail = orderConnector!!.getOrder(invoiceDetail.cloverOrderId)
+            var orderDetail = orderConnector!!.getOrder(invoiceDetail.uniqueId)
             var invoiceUpdate = orderPaymentState(orderDetail)
             return@withContext invoiceUpdate
         }
@@ -285,15 +276,10 @@ class ListOfInvoices : Fragment(), InvoicesAdapter.OnServiceClickListener {
 
         var invoiceUpdate: InvoiceUpdate? = null
 
-        Log.d("TAG", "Cash Payment  ${orderDetail.payments}")
-        Log.d("TAG", "Cash Payment paymentState:  ${orderDetail.paymentState}")
-        Log.d("TAG", "Cash Payment state: ${orderDetail.state}")
-        Log.d("TAG", "Cash Payment id : ${orderDetail.id}")
         if (orderDetail.payments.get(0).tender.label == "Cash") {
             orderDetail.clearPayments()
             orderDetail.clearState()
             Log.d("TAG", "Cash Payment not allowed ")
-            //show toast
 
         } else if (orderDetail.payments.get(0).tender.label == "Credit Card") {
 
@@ -319,12 +305,10 @@ class ListOfInvoices : Fragment(), InvoicesAdapter.OnServiceClickListener {
         if (orderDetail.total == amount){
             invoiceUpdate = InvoiceUpdate("paid",0, "Payment Successfully done")
             Log.d("TAG", "Cash Payment done fully paid")
-                //toast Payment Successfully done
         }else{
             var pendingAmount = orderDetail.total - amount
             invoiceUpdate = InvoiceUpdate("partially paid",pendingAmount,"Partial payment Successfully done" )
             Log.d("TAG", "Cash Payment done partially paid")
-            //toast Partial payment Successfully done
         }
 
         amount = 0
