@@ -1,10 +1,9 @@
 package com.example.mycloverpayment.customercarddetails
 
-import android.util.Log
 import com.example.mycloverpayment.customercarddetails.model.createordermodel.MerchandPaymentGatewayConfig
 import com.example.mycloverpayment.customercarddetails.model.createordermodel.CreateCustomer
 import com.example.mycloverpayment.customercarddetails.model.createordermodel.CreateCustomerResponse
-import com.example.mycloverpayment.helper.ApiCall
+import com.example.mycloverpayment.network.ApiCall
 import com.example.mycloverpayment.model.ApisResponse
 import retrofit2.HttpException
 

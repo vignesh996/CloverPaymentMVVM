@@ -1,7 +1,6 @@
-package com.example.mycloverpayment.helper
+package com.example.mycloverpayment.network
 
-import android.icu.util.TimeUnit
-import com.example.mycloverpayment.ApiStories
+import com.example.mycloverpayment.utills.AppConstant
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

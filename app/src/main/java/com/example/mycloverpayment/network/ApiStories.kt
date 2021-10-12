@@ -1,4 +1,4 @@
-package com.example.mycloverpayment
+package com.example.mycloverpayment.network
 
 import com.example.mycloverpayment.carddetails.model.*
 import com.example.mycloverpayment.customercarddetails.model.createordermodel.MerchandPaymentGatewayConfig

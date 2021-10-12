@@ -2,7 +2,7 @@ package com.example.mycloverpayment.carddetails
 
 import android.util.Log
 import com.example.mycloverpayment.carddetails.model.*
-import com.example.mycloverpayment.helper.ApiCall
+import com.example.mycloverpayment.network.ApiCall
 import com.example.mycloverpayment.model.ApisResponse
 import com.google.gson.Gson
 import retrofit2.HttpException

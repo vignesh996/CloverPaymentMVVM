@@ -1,8 +1,6 @@
 package com.example.mycloverpayment.listofinvoices
 
-import com.example.mycloverpayment.customercarddetails.model.createordermodel.MerchandPaymentGatewayConfig
-import com.example.mycloverpayment.helper.ApiCall
-import com.example.mycloverpayment.model.ApisResponse
+import com.example.mycloverpayment.network.ApiCall
 import retrofit2.HttpException
 
 class ListOfInvoicesRepository {

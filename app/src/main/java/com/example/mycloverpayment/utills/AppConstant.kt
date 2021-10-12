@@ -1,4 +1,4 @@
-package com.example.mycloverpayment.helper
+package com.example.mycloverpayment.utills
 
 object AppConstant {
     const val BASE_URL ="https://apisandbox.dev.clover.com/"
