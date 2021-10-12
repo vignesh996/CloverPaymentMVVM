@@ -3,11 +3,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_nav"
-    app:startDestination="@id/listOfInvoices">
+    app:startDestination="@id/loginPage">
 
     <fragment
         android:id="@+id/listOfInvoices"
         android:name="com.example.mycloverpayment.listofinvoices.ListOfInvoices"
-        android:label="fragment_list_of_invoices"
-        tools:layout="@layout/fragment_list_of_invoices" />
+        android:label="Invoices">
+        <action
+            android:id="@+id/action_listOfInvoices_to_cardDetails"
+            app:destination="@id/cardDetails" />
+        <action
+            android:id="@+id/action_listOfInvoices_to_webViewFragment22"
+            app:destination="@id/webViewFragment2" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/loginPage"
+        android:name="com.example.mycloverpayment.login.LoginPage"
+        android:label="LoginPage" >
+        <action
+            android:id="@+id/action_loginPage_to_listOfInvoices"
+            app:destination="@id/listOfInvoices" />
+    </fragment>
+    <fragment
+        android:id="@+id/cardDetails"
+        android:name="com.example.mycloverpayment.carddetails.CardDetails"
+        android:label="CardDetails" >
+        <argument
+            android:name="invoiceDetail"
+            app:argType="com.example.mycloverpayment.model.InvoiceDetail" />
+        <action
+            android:id="@+id/action_cardDetails_to_listOfInvoices2"
+            app:destination="@id/listOfInvoices" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment2"
+        android:name="com.example.mycloverpayment.webview.WebViewFragment"
+        android:label="Payment"
+        tools:layout="@layout/fragment_web_view" >
+        <argument
+            android:name="invoiceDetail"
+            app:argType="com.example.mycloverpayment.model.InvoiceDetail" />
+        <action
+            android:id="@+id/action_webViewFragment2_to_listOfInvoices"
+            app:destination="@id/listOfInvoices" />
+    </fragment>
+
 </navigation>

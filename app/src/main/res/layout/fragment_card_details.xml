@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="cardDetailsViewModel"
+            type="com.example.mycloverpayment.carddetails.CardDetailsViewModel" />
+    </data>
+
+     <androidx.constraintlayout.widget.ConstraintLayout
+         android:id="@+id/card_deatil"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="20dp">
+
+         <LinearLayout
+             android:id="@+id/linearLayout"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_margin="30dp"
+             android:orientation="vertical"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="parent">
+
+             <EditText
+                 android:id="@+id/card_number"
+                 android:layout_width="500dp"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="15dp"
+                 android:hint="Enter Your CardNumber"
+                 android:inputType="number"
+                 />
+
+             <EditText
+                 android:id="@+id/cvv"
+                 android:layout_width="500dp"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="15dp"
+                 android:hint="CVV"
+                 android:inputType="number"/>
+
+             <EditText
+                 android:id="@+id/exp_month"
+                 android:layout_width="500dp"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="15dp"
+                 android:hint="Last 2 Digit of Exp.Month"
+                 android:inputType="number"/>
+
+             <EditText
+                 android:id="@+id/exp_year"
+                 android:layout_width="500dp"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="15dp"
+                 android:hint="Last 2 Digit of Exp.Year"
+                 android:inputType="number"/>
+
+             <Button
+                 android:id="@+id/pay_btn"
+                 android:layout_width="200dp"
+                 android:layout_height="70dp"
+                 android:layout_marginLeft="300dp"
+                 android:layout_marginTop="25dp"
+
+                 android:backgroundTint="@color/green"
+                 android:text="PAY"
+                 android:textColor="@color/black" />
+
+         </LinearLayout>
+
+         <RelativeLayout
+             android:id="@+id/progressbar_layout"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="parent"
+             android:visibility="gone">
+
+             <ProgressBar
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginLeft="380dp"/>
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Payment Processing..."
+                 android:textSize="@dimen/size_20dp"
+                 android:layout_marginLeft="450dp"
+                 android:textStyle="italic"
+                 android:layout_marginTop="8dp"/>
+
+         </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

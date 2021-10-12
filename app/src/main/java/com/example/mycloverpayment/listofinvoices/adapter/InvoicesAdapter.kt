@@ -18,7 +18,7 @@ class InvoicesAdapter : RecyclerView.Adapter<InvoicesAdapter.InvoiceViewHolder>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InvoiceViewHolder {
         var itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.invoices_card_view, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.invoices_card_view, parent, false)
         return InvoiceViewHolder(itemView)
     }
 
@@ -28,7 +28,7 @@ class InvoicesAdapter : RecyclerView.Adapter<InvoicesAdapter.InvoiceViewHolder>(
         var statusView = holder.itemView.findViewById<TextView>(R.id.payment_status)
 
         holder.itemView.findViewById<Button>(R.id.pay_btn).setOnClickListener {
-            onClickListener?.onPayBtnClicked(invoiceList, position, statusView)
+            onClickListener?.onPayBtnClicked(invoiceList, position, statusView,it)
         }
     }
 
@@ -42,6 +42,7 @@ class InvoicesAdapter : RecyclerView.Adapter<InvoicesAdapter.InvoiceViewHolder>(
         var invoiceAmont = view.findViewById<TextView>(R.id.invoice_amount)
         var uniqueId = view.findViewById<TextView>(R.id.unique_id)
         var paymentStatus = view.findViewById<TextView>(R.id.payment_status)
+        var invoiceNo = view.findViewById<TextView>(R.id.invoice_no)
         var payBtn = view.findViewById<Button>(R.id.pay_btn)
 
         fun onBind(invoice: PaymentOrder) {
@@ -50,14 +51,14 @@ class InvoicesAdapter : RecyclerView.Adapter<InvoicesAdapter.InvoiceViewHolder>(
             customerId.text = invoice.customerId
             invoiceAmont.text = invoice.amount.toString()
             paymentStatus.text = invoice.paymentStatus
-            if (invoice.paymentStatus.toUpperCase() == "PAID") {
+            invoiceNo.text = invoice.invoiceNo
+            if (invoice.paymentStatus == "PAID") {
                 paymentStatus.setTextColor(Color.parseColor("#4CAF50"))
-                payBtn.visibility  = View.INVISIBLE
+                payBtn.visibility = View.INVISIBLE
             } else {
                 paymentStatus.setTextColor(Color.parseColor("#E1AF1B"))
-                payBtn.visibility  = View.VISIBLE
+                payBtn.visibility = View.VISIBLE
             }
-
 
         }
     }
@@ -73,7 +74,12 @@ class InvoicesAdapter : RecyclerView.Adapter<InvoicesAdapter.InvoiceViewHolder>(
     }
 
     interface OnServiceClickListener {
-        fun onPayBtnClicked(invoiceList: ArrayList<PaymentOrder>, position: Int, statusView: TextView)
+        fun onPayBtnClicked(
+                invoiceList: ArrayList<PaymentOrder>,
+                position: Int,
+                statusView: TextView,
+                view: View
+        )
 
     }
 

@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">MyCloverpayment</string>
+    <string name="app_name">Invoice</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mandatory_error">All the fields are Mandatory!</string>
+    <string name="valid_card_number">Enter a Valid Card Number</string>
+    <string name="enter_valid_cvv">Enter Valid CVV</string>
+    <string name="enter_valid_month">Enter Valid Month</string>
+    <string name="enter_valid_year">Enter Valid Year</string>
 </resources>
