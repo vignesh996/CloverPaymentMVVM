@@ -13,9 +13,11 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.clover.connector.sdk.v3.PaymentConnector
 import com.clover.sdk.util.CloverAccount
 import com.clover.sdk.v1.Intents
@@ -28,6 +30,7 @@ import com.example.mycloverpayment.BR
 import com.example.mycloverpayment.R
 import com.example.mycloverpayment.base.BaseFragment
 import com.example.mycloverpayment.databinding.FragmentListOfInvoicesBinding
+import com.example.mycloverpayment.helper.MainViewModelFactory
 import com.example.mycloverpayment.helper.StaticInvoiceList
 import com.example.mycloverpayment.listofinvoices.adapter.InvoicesAdapter
 import com.example.mycloverpayment.model.InvoiceDetail
@@ -37,7 +40,7 @@ import com.example.mycloverpayment.rxbus.RxBus
 import com.example.mycloverpayment.rxbus.RxBusEvent
 
 
-class ListOfInvoices : BaseFragment(), InvoicesAdapter.OnServiceClickListener{
+class ListOfInvoices : Fragment(), InvoicesAdapter.OnServiceClickListener {
 
     lateinit var mViewModel: ListOfInvoicesViewModel
     lateinit var mDataBinding: FragmentListOfInvoicesBinding
@@ -46,9 +49,10 @@ class ListOfInvoices : BaseFragment(), InvoicesAdapter.OnServiceClickListener{
     private var mInventoryConnector: InventoryConnector? = null
     private var orderConnector: OrderConnector? = null
     private lateinit var paymentConnector: PaymentConnector
+    lateinit var viewModelFactory: MainViewModelFactory
 
-    companion object{
-        private var invoicesList=StaticInvoiceList().getInvoiceList()
+    companion object {
+        private var invoicesList = StaticInvoiceList().getInvoiceList()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,38 +63,52 @@ class ListOfInvoices : BaseFragment(), InvoicesAdapter.OnServiceClickListener{
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        // login Clover Account
-        getCloverAccount()
-        //connect with Inventory and Orders application
-        connect()
         mDataBinding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_list_of_invoices,
-                container,
-                false
+            inflater,
+            R.layout.fragment_list_of_invoices,
+            container,
+            false
         )
         return mDataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         // DataBinding and ViewModel execution
         executeDataBindingAndViewModel()
-
+        //get current account
+        getCurrentAccount()
         // Adapting recyclerView
-        executeRecyclerView()
+        executeRecyclerView(view)
         //Update ResultData
         observeResult()
+
     }
 
+    private fun getCurrentAccount() {
+        mAccount = mViewModel.getCloverAccount()
+        mViewModel.connect()
+        mInventoryConnector = mViewModel.mInventoryConnector
+        orderConnector = mViewModel.orderConnector
+    }
+
+    private fun executeDataBindingAndViewModel() {
+        viewModelFactory = MainViewModelFactory(requireContext())
+        mViewModel =
+            ViewModelProvider(this, viewModelFactory).get(ListOfInvoicesViewModel::class.java)
+        mDataBinding.setVariable(BR.listOfInvoicesViewModel, mViewModel)
+        mDataBinding.lifecycleOwner = this
+        mDataBinding.executePendingBindings()
+    }
 
     private fun observeResult() {
-        RxBus.listen(RxBusEvent.Result::class.java).subscribe {
-            if (it.status == "succeeded"){
+        var paymentStatus = RxBus.listen(RxBusEvent.Result::class.java).subscribe {
+            if (it.status == "succeeded") {
                 invoicesList[it.position].uniqueId = it.id
                 invoicesList[it.position].paymentStatus = "PAID"
                 adapter.refreshItems(invoicesList)
@@ -98,8 +116,8 @@ class ListOfInvoices : BaseFragment(), InvoicesAdapter.OnServiceClickListener{
         }
     }
 
-    private fun executeRecyclerView() {
-        var recyclerView = mDataBinding.recyclerView
+    private fun executeRecyclerView(view: View) {
+        var recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         val linearLayoutManager = LinearLayoutManager(context)
         recyclerView.setLayoutManager(linearLayoutManager)
         recyclerView.setAdapter(adapter)
@@ -107,50 +125,11 @@ class ListOfInvoices : BaseFragment(), InvoicesAdapter.OnServiceClickListener{
         adapter.refreshItems(invoicesList)
     }
 
-    private fun executeDataBindingAndViewModel() {
-        mViewModel = ViewModelProvider(this).get(ListOfInvoicesViewModel::class.java)
-        mDataBinding.setVariable(BR.listOfInvoicesViewModel, mViewModel)
-        mDataBinding.lifecycleOwner = this
-        mDataBinding.executePendingBindings()
-    }
-
-    private fun getCloverAccount() {
-        if (mAccount == null) {
-            mAccount = CloverAccount.getAccount(activity)
-            if (mAccount == null) {
-                return
-            }
-        }
-    }
-
-    private fun connect() {
-        disconnect()
-        if (mAccount != null) {
-            mInventoryConnector = InventoryConnector(activity, mAccount, null)
-            mInventoryConnector!!.connect()
-            orderConnector = OrderConnector(activity, mAccount, null)
-            orderConnector!!.connect()
-        }
-    }
-
-    private fun disconnect() {
-        if (mInventoryConnector != null) {
-            mInventoryConnector!!.disconnect()
-            mInventoryConnector = null
-        }
-
-        if (orderConnector != null) {
-            orderConnector!!.disconnect()
-            orderConnector = null
-        }
-    }
-
-
     override fun onPayBtnClicked(
-            invoiceList: ArrayList<PaymentOrder>,
-            position: Int,
-            statusView: TextView,
-            view: View
+        invoiceList: ArrayList<PaymentOrder>,
+        position: Int,
+        statusView: TextView,
+        view: View
     ) {
         var uniqueId = invoiceList[position].uniqueId
         var customerName = invoiceList[position].customerName
@@ -160,7 +139,16 @@ class ListOfInvoices : BaseFragment(), InvoicesAdapter.OnServiceClickListener{
         var cloverOrderId = invoiceList[position].cloverOrderId
         var invoiceId = invoiceList[position].invoiceNo
 
-        var invoiceDetail = InvoiceDetail(invoiceId,uniqueId, customerName, customerId, amount, paymentStatus, cloverOrderId,position)
+        var invoiceDetail = InvoiceDetail(
+            invoiceId,
+            uniqueId,
+            customerName,
+            customerId,
+            amount,
+            paymentStatus,
+            cloverOrderId,
+            position
+        )
 
         showDialog(invoiceDetail)
 
@@ -187,13 +175,17 @@ class ListOfInvoices : BaseFragment(), InvoicesAdapter.OnServiceClickListener{
 
     }
 
-    private fun manualEntryPage(invoiceDetail: InvoiceDetail){
+    private fun manualEntryPage(invoiceDetail: InvoiceDetail) {
         var action = ListOfInvoicesDirections.actionListOfInvoicesToWebViewFragment22(invoiceDetail)
         findNavController().navigate(action)
     }
 
     private fun swipeEntryPage(invoiceDetail: InvoiceDetail) {
-        Toast.makeText(requireContext(), "Swipe Payment option not supported on Android devices", Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            requireContext(),
+            "Swipe Payment option not supported on Android devices",
+            Toast.LENGTH_SHORT
+        ).show()
         paymentConnector = MyPaymentConnector(requireContext()).initializePaymentConnector()
         paymentConnector.initializeConnection()
 //        onPaymentClick(invoiceDetail)

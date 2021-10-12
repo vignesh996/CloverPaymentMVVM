@@ -1,76 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="loginViewModel"
+            type="com.example.mycloverpayment.login.LoginViewModel" />
+    </data>
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/et_email"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rectangle_gray"
-        android:drawableStart="@drawable/name"
-        android:drawablePadding="@dimen/size_16dp"
-        android:hint="Mercaht Name"
-        android:imeOptions="actionNext"
-        android:inputType="text"
-        android:paddingStart="@dimen/size_16dp"
-        android:paddingTop="@dimen/size_10dp"
-        android:paddingEnd="@dimen/size_16dp"
-        android:paddingBottom="@dimen/size_10dp"
-        android:text=""
-        android:textColor="@color/color_black"
-        android:textSize="@dimen/size_16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.192" />
+        android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/et_pass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rectangle_gray"
-        android:drawableStart="@drawable/ic_baseline_vpn_key_24"
-        android:drawablePadding="@dimen/size_16dp"
-        android:hint="Password"
-        android:imeOptions="actionNext"
-        android:inputType="textPassword"
-        android:paddingStart="@dimen/size_16dp"
-        android:paddingTop="@dimen/size_10dp"
-        android:paddingEnd="@dimen/size_16dp"
-        android:paddingBottom="@dimen/size_10dp"
-        android:text=""
-        android:textColor="@color/color_black"
-        android:textSize="@dimen/size_16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.303" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login_btn"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="@dimen/size_2dp"
-        android:layout_marginRight="@dimen/size_2dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="@dimen/size_20dp"
-        android:background="@drawable/rectangle_blue_fill_curve"
-        android:text="Login"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.427" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_gray"
+            android:drawableStart="@drawable/name"
+            android:drawablePadding="@dimen/size_16dp"
+            android:hint="Mercaht Name"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:paddingStart="@dimen/size_16dp"
+            android:paddingTop="@dimen/size_10dp"
+            android:paddingEnd="@dimen/size_16dp"
+            android:paddingBottom="@dimen/size_10dp"
+            android:text=""
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/size_16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.192" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_gray"
+            android:drawableStart="@drawable/ic_baseline_vpn_key_24"
+            android:drawablePadding="@dimen/size_16dp"
+            android:hint="Password"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:paddingStart="@dimen/size_16dp"
+            android:paddingTop="@dimen/size_10dp"
+            android:paddingEnd="@dimen/size_16dp"
+            android:paddingBottom="@dimen/size_10dp"
+            android:text=""
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/size_16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.303" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/login_btn"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/size_2dp"
+            android:layout_marginRight="@dimen/size_2dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="@dimen/size_20dp"
+            android:background="@drawable/rectangle_blue_fill_curve"
+            android:text="Login"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.427" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

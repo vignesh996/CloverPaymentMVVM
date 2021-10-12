@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginPage"
-        android:name="com.example.mycloverpayment.login.LoginPage"
+        android:name="com.example.mycloverpayment.login.LoginFragment"
         android:label="LoginPage" >
         <action
             android:id="@+id/action_loginPage_to_listOfInvoices"

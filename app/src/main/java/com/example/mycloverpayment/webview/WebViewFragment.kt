@@ -1,7 +1,6 @@
 package com.example.mycloverpayment.webview
 
 
-import android.app.ActionBar
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -29,9 +28,13 @@ import androidx.navigation.fragment.navArgs
 import com.clover.sdk.util.CloverAuth
 import com.example.mycloverpayment.BR
 import com.example.mycloverpayment.R
+import com.example.mycloverpayment.base.BaseFragment
 import com.example.mycloverpayment.carddetails.model.CreateCharge
+import com.example.mycloverpayment.databinding.FragmentLoginPageBinding
 import com.example.mycloverpayment.databinding.FragmentWebViewBinding
+import com.example.mycloverpayment.helper.MainViewModelFactory
 import com.example.mycloverpayment.helper.MyJavaScriptInterface
+import com.example.mycloverpayment.login.LoginViewModel
 import com.example.mycloverpayment.model.ApisResponse
 import com.example.mycloverpayment.model.InvoiceDetail
 import com.example.mycloverpayment.rxbus.RxBus
@@ -52,6 +55,7 @@ class WebViewFragment : Fragment() {
     private var webView: WebView? = null
     private var authResult: CloverAuth.AuthResult? = null
     private lateinit var dataDisposable: Disposable
+    lateinit var viewModelFactory: MainViewModelFactory
 
     override fun onStart() {
         super.onStart()
@@ -78,9 +82,8 @@ class WebViewFragment : Fragment() {
 
         // Listen for MessageEvents only
         tokenObserver()
-        //Display webview
+        // Display web view
         webViewDisplay()
-
 
     }
 
@@ -105,7 +108,6 @@ class WebViewFragment : Fragment() {
         }
     }
 
-
     private fun tokenObserver() {
         dataDisposable = RxBus.listen(RxBusEvent.Token::class.java).subscribe {
             val intent = Intent("ACTION_UPDATE_TOKEN")
@@ -115,7 +117,8 @@ class WebViewFragment : Fragment() {
     }
 
     private fun executeDataBindingAndViewModel() {
-        mViewModel = ViewModelProvider(this).get(WebViewViewModel::class.java)
+        viewModelFactory = MainViewModelFactory(requireContext())
+        mViewModel = ViewModelProvider(this,viewModelFactory).get(WebViewViewModel::class.java)
         mDataBinding.setVariable(BR.webViewViewModel, mViewModel)
         mDataBinding.lifecycleOwner = this
         mDataBinding.executePendingBindings()
@@ -158,23 +161,11 @@ class WebViewFragment : Fragment() {
         override fun onReceive(context: Context, intent: Intent) {
             showProgressBar()
             GlobalScope.launch(Dispatchers.Main) {
-                authResult = getCloverAuth()
+                authResult = mViewModel.getCloverAuth()
                 var cardToken = intent.getStringExtra("token")
                 var amount = invoiceDetail.amount.toInt() * 100
                 createCharge(CreateCharge(amount, "usd", "ecom", cardToken!!))
             }
-        }
-    }
-
-    private suspend fun getCloverAuth(): CloverAuth.AuthResult? {
-
-        return withContext(Dispatchers.IO) {
-            try {
-                return@withContext CloverAuth.authenticate(requireContext().applicationContext)
-            } catch (e: Exception) {
-                Log.d("TAG", "Error authenticating", e)
-            }
-            return@withContext null
         }
     }
 
@@ -189,10 +180,8 @@ class WebViewFragment : Fragment() {
                     RxBus.publish(RxBusEvent.Result(apiResponse.response.id, apiResponse.response.status, invoiceDetail.position))
                     hideProgressBar()
                     Toast.makeText(context, "Payment Successfully Paid", Toast.LENGTH_SHORT).show()
-
                 }
                 is ApisResponse.CustomError -> {
-                    Log.d("TAG", "tokenObserver: createCharge customError called")
                     Toast.makeText(activity, "${apiResponse.message}", Toast.LENGTH_SHORT).show()
                 }
             }
