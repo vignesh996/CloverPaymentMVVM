@@ -12,7 +12,7 @@ import com.example.mycloverpayment.R
 
 
 class LoginPage : Fragment() {
-
+////////////////////////////////////
     lateinit var name : EditText
     lateinit var password : EditText
     lateinit var loginBtn : Button
