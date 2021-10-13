@@ -28,6 +28,7 @@ import com.clover.sdk.v3.order.*
 import com.clover.sdk.v3.payments.TipMode
 import com.clover.sdk.v3.remotepay.SaleRequest
 import com.example.mycloverpayment.BR
+import com.example.mycloverpayment.CloverPaymentApp
 import com.example.mycloverpayment.R
 import com.example.mycloverpayment.base.BaseFragment
 import com.example.mycloverpayment.base.BaseViewModel
@@ -81,7 +82,6 @@ class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding,ListOfInvoices
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         listOfInvoicesBinding = mDataBinding!!
-        listOfInvoicesBinding.recyclerView
         //get current account
         getCurrentAccount()
         // Adapting recyclerView
@@ -92,7 +92,7 @@ class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding,ListOfInvoices
     }
 
     private fun getCurrentAccount() {
-        mAccount = getViewModel()?.getCloverAccount()
+        mAccount = CloverPaymentApp().mAccount
         getViewModel()?.connect()
         mInventoryConnector = getViewModel()?.mInventoryConnector
         orderConnector = getViewModel()?.orderConnector

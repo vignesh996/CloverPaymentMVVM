@@ -19,15 +19,7 @@ class ListOfInvoicesViewModel(var context: Context) :BaseViewModel() {
     var mInventoryConnector: InventoryConnector? = null
     var orderConnector: OrderConnector? = null
 
-    fun getCloverAccount(): Account? {
-        if (mAccount == null) {
-            mAccount = CloverAccount.getAccount(context)
-            if (mAccount == null) {
-                return null
-            }
-        }
-        return mAccount
-    }
+
 
     fun connect() {
         disconnect()
