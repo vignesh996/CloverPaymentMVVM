@@ -49,8 +49,6 @@ class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding,ListOfInvoices
     lateinit var listOfInvoicesBinding: FragmentListOfInvoicesBinding
     var adapter = InvoicesAdapter()
     private var mAccount: Account? = null
-    private var mInventoryConnector: InventoryConnector? = null
-    private var orderConnector: OrderConnector? = null
     private lateinit var paymentConnector: PaymentConnector
     lateinit var viewModelFactory: MainViewModelFactory
 
@@ -93,9 +91,6 @@ class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding,ListOfInvoices
 
     private fun getCurrentAccount() {
         mAccount = CloverPaymentApp().mAccount
-        getViewModel()?.connect()
-        mInventoryConnector = getViewModel()?.mInventoryConnector
-        orderConnector = getViewModel()?.orderConnector
     }
 
 
@@ -207,13 +202,6 @@ class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding,ListOfInvoices
         return saleRequest
     }
 
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mInventoryConnector!!.disconnect()
-        orderConnector!!.disconnect()
-    }
 
 
 }

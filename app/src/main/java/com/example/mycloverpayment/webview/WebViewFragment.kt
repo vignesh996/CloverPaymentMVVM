@@ -177,6 +177,7 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding, WebViewViewModel>()
                     Toast.makeText(context, "Payment Successfully Paid", Toast.LENGTH_SHORT).show()
                 }
                 is ApisResponse.CustomError -> {
+                    hideProgressBar()
                     Toast.makeText(activity, "${apiResponse.message}", Toast.LENGTH_SHORT).show()
                 }
             }
