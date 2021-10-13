@@ -2,6 +2,7 @@ package com.example.mycloverpayment.listofinvoices
 
 import android.accounts.Account
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,6 +30,7 @@ import com.clover.sdk.v3.remotepay.SaleRequest
 import com.example.mycloverpayment.BR
 import com.example.mycloverpayment.R
 import com.example.mycloverpayment.base.BaseFragment
+import com.example.mycloverpayment.base.BaseViewModel
 import com.example.mycloverpayment.databinding.FragmentListOfInvoicesBinding
 import com.example.mycloverpayment.helper.MainViewModelFactory
 import com.example.mycloverpayment.helper.StaticInvoiceList
@@ -40,16 +42,29 @@ import com.example.mycloverpayment.rxbus.RxBus
 import com.example.mycloverpayment.rxbus.RxBusEvent
 
 
-class ListOfInvoices : Fragment(), InvoicesAdapter.OnServiceClickListener {
+class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding,ListOfInvoicesViewModel>(),
+        InvoicesAdapter.OnServiceClickListener {
 
-    lateinit var mViewModel: ListOfInvoicesViewModel
-    lateinit var mDataBinding: FragmentListOfInvoicesBinding
+    lateinit var listOfInvoicesBinding: FragmentListOfInvoicesBinding
     var adapter = InvoicesAdapter()
     private var mAccount: Account? = null
     private var mInventoryConnector: InventoryConnector? = null
     private var orderConnector: OrderConnector? = null
     private lateinit var paymentConnector: PaymentConnector
     lateinit var viewModelFactory: MainViewModelFactory
+
+    override fun onAttach(context: Context) {
+        viewModelFactory = MainViewModelFactory(requireContext())
+        super.onAttach(context)
+
+    }
+
+    override fun getViewModel(): ListOfInvoicesViewModel? =
+            ViewModelProvider(this,  viewModelFactory).get(ListOfInvoicesViewModel::class.java)
+
+    override fun getBindingVariable(): Int = BR.listOfInvoicesViewModel
+
+    override fun getContentView(): Int = R.layout.fragment_list_of_invoices
 
     companion object {
         private var invoicesList = StaticInvoiceList().getInvoiceList()
@@ -62,25 +77,11 @@ class ListOfInvoices : Fragment(), InvoicesAdapter.OnServiceClickListener {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        mDataBinding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_list_of_invoices,
-            container,
-            false
-        )
-        return mDataBinding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        // DataBinding and ViewModel execution
-        executeDataBindingAndViewModel()
+        listOfInvoicesBinding = mDataBinding!!
+        listOfInvoicesBinding.recyclerView
         //get current account
         getCurrentAccount()
         // Adapting recyclerView
@@ -91,20 +92,12 @@ class ListOfInvoices : Fragment(), InvoicesAdapter.OnServiceClickListener {
     }
 
     private fun getCurrentAccount() {
-        mAccount = mViewModel.getCloverAccount()
-        mViewModel.connect()
-        mInventoryConnector = mViewModel.mInventoryConnector
-        orderConnector = mViewModel.orderConnector
+        mAccount = getViewModel()?.getCloverAccount()
+        getViewModel()?.connect()
+        mInventoryConnector = getViewModel()?.mInventoryConnector
+        orderConnector = getViewModel()?.orderConnector
     }
 
-    private fun executeDataBindingAndViewModel() {
-        viewModelFactory = MainViewModelFactory(requireContext())
-        mViewModel =
-            ViewModelProvider(this, viewModelFactory).get(ListOfInvoicesViewModel::class.java)
-        mDataBinding.setVariable(BR.listOfInvoicesViewModel, mViewModel)
-        mDataBinding.lifecycleOwner = this
-        mDataBinding.executePendingBindings()
-    }
 
     private fun observeResult() {
         var paymentStatus = RxBus.listen(RxBusEvent.Result::class.java).subscribe {
@@ -117,7 +110,7 @@ class ListOfInvoices : Fragment(), InvoicesAdapter.OnServiceClickListener {
     }
 
     private fun executeRecyclerView(view: View) {
-        var recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        var recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
         val linearLayoutManager = LinearLayoutManager(context)
         recyclerView.setLayoutManager(linearLayoutManager)
         recyclerView.setAdapter(adapter)
@@ -213,6 +206,8 @@ class ListOfInvoices : Fragment(), InvoicesAdapter.OnServiceClickListener {
         saleRequest.tipMode = TipMode.TIP_PROVIDED
         return saleRequest
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()

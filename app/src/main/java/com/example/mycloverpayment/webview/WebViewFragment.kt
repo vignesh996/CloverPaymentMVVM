@@ -30,10 +30,12 @@ import com.example.mycloverpayment.BR
 import com.example.mycloverpayment.R
 import com.example.mycloverpayment.base.BaseFragment
 import com.example.mycloverpayment.carddetails.model.CreateCharge
+import com.example.mycloverpayment.databinding.FragmentListOfInvoicesBinding
 import com.example.mycloverpayment.databinding.FragmentLoginPageBinding
 import com.example.mycloverpayment.databinding.FragmentWebViewBinding
 import com.example.mycloverpayment.helper.MainViewModelFactory
 import com.example.mycloverpayment.helper.MyJavaScriptInterface
+import com.example.mycloverpayment.listofinvoices.ListOfInvoicesViewModel
 import com.example.mycloverpayment.login.LoginViewModel
 import com.example.mycloverpayment.model.ApisResponse
 import com.example.mycloverpayment.model.InvoiceDetail
@@ -46,10 +48,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class WebViewFragment : Fragment() {
+class WebViewFragment : BaseFragment<FragmentWebViewBinding, WebViewViewModel>() {
 
-    lateinit var mViewModel: WebViewViewModel
-    lateinit var mDataBinding: FragmentWebViewBinding
+    lateinit var webViewBinding: FragmentWebViewBinding
     private val args: WebViewFragmentArgs by navArgs()
     lateinit var invoiceDetail: InvoiceDetail
     private var webView: WebView? = null
@@ -57,27 +58,28 @@ class WebViewFragment : Fragment() {
     private lateinit var dataDisposable: Disposable
     lateinit var viewModelFactory: MainViewModelFactory
 
+    override fun onAttach(context: Context) {
+        viewModelFactory = MainViewModelFactory(requireContext())
+        super.onAttach(context)
+
+    }
+
+    override fun getViewModel(): WebViewViewModel? =
+            ViewModelProvider(this,  viewModelFactory).get(WebViewViewModel::class.java)
+
+    override fun getBindingVariable(): Int = BR.webViewViewModel
+
+    override fun getContentView(): Int = R.layout.fragment_web_view
+
     override fun onStart() {
         super.onStart()
         // Start receiving the message
         requireContext().registerReceiver(updateTokenReceiver, IntentFilter("ACTION_UPDATE_TOKEN"))
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        mDataBinding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_web_view,
-                container,
-                false
-        )
-        return mDataBinding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // DataBinding and ViewModel execution
-        executeDataBindingAndViewModel()
+        webViewBinding = mDataBinding!!
         invoiceDetail = args.invoiceDetail
 
         // Listen for MessageEvents only
@@ -88,7 +90,7 @@ class WebViewFragment : Fragment() {
     }
 
     private fun webViewDisplay(){
-        webView = mDataBinding.webView
+        webView = webViewBinding.webView
         webView?.settings?.javaScriptEnabled = true
         webView?.addJavascriptInterface(MyJavaScriptInterface(requireContext()), "Android")
         loadWebview("http://192.168.1.6:8080/myapp/webview.html")
@@ -116,13 +118,6 @@ class WebViewFragment : Fragment() {
         }
     }
 
-    private fun executeDataBindingAndViewModel() {
-        viewModelFactory = MainViewModelFactory(requireContext())
-        mViewModel = ViewModelProvider(this,viewModelFactory).get(WebViewViewModel::class.java)
-        mDataBinding.setVariable(BR.webViewViewModel, mViewModel)
-        mDataBinding.lifecycleOwner = this
-        mDataBinding.executePendingBindings()
-    }
 
     private fun loadWebview(url: String) {
 
@@ -161,7 +156,7 @@ class WebViewFragment : Fragment() {
         override fun onReceive(context: Context, intent: Intent) {
             showProgressBar()
             GlobalScope.launch(Dispatchers.Main) {
-                authResult = mViewModel.getCloverAuth()
+                authResult = getViewModel()?.getCloverAuth()
                 var cardToken = intent.getStringExtra("token")
                 var amount = invoiceDetail.amount.toInt() * 100
                 createCharge(CreateCharge(amount, "usd", "ecom", cardToken!!))
@@ -172,7 +167,7 @@ class WebViewFragment : Fragment() {
     private fun createCharge(createCharge: CreateCharge) {
 
         var authToken = "Bearer " + authResult?.authToken
-        mViewModel.createCharge(authToken, createCharge).observe(viewLifecycleOwner, Observer { apiResponse ->
+        getViewModel()?.createCharge(authToken, createCharge)?.observe(viewLifecycleOwner, Observer { apiResponse ->
             when (apiResponse) {
                 is ApisResponse.Success -> {
                     webView?.destroy()
@@ -189,14 +184,14 @@ class WebViewFragment : Fragment() {
     }
 
     private fun showProgressBar() {
-        mDataBinding.progressbarLayout.visibility = View.VISIBLE
-        mDataBinding.webView.visibility = View.INVISIBLE
+        webViewBinding.progressbarLayout.visibility = View.VISIBLE
+        webViewBinding.webView.visibility = View.INVISIBLE
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     private fun hideProgressBar() {
-        mDataBinding.progressbarLayout.visibility = View.GONE
-        mDataBinding.webView.visibility = View.VISIBLE
+        webViewBinding.progressbarLayout.visibility = View.GONE
+        webViewBinding.webView.visibility = View.VISIBLE
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 

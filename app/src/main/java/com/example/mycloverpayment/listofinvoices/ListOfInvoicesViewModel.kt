@@ -13,7 +13,7 @@ import com.example.mycloverpayment.model.PaymentOrder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class ListOfInvoicesViewModel(var context: Context) :ViewModel() {
+class ListOfInvoicesViewModel(var context: Context) :BaseViewModel() {
 
     private var mAccount: Account? = null
     var mInventoryConnector: InventoryConnector? = null

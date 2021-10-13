@@ -1,5 +1,6 @@
 package com.example.mycloverpayment.login
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,41 +16,38 @@ import com.example.mycloverpayment.R
 import com.example.mycloverpayment.base.BaseFragment
 import com.example.mycloverpayment.databinding.FragmentListOfInvoicesBinding
 import com.example.mycloverpayment.databinding.FragmentLoginPageBinding
+import com.example.mycloverpayment.helper.MainViewModelFactory
 import com.example.mycloverpayment.listofinvoices.ListOfInvoicesViewModel
 
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment<FragmentLoginPageBinding,LoginViewModel>() {
 
-    lateinit var mViewModel: LoginViewModel
-    lateinit var mDataBinding: FragmentLoginPageBinding
+    lateinit var loginPageBinding: FragmentLoginPageBinding
+    lateinit var viewModelFactory: MainViewModelFactory
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        mDataBinding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_login_page,
-            container,
-            false
-        )
-        return mDataBinding.root
+
+    override fun getViewModel(): LoginViewModel? =
+            ViewModelProvider(this,  viewModelFactory).get(LoginViewModel::class.java)
+
+    override fun getBindingVariable(): Int = BR.loginViewModel
+
+    override fun getContentView(): Int = R.layout.fragment_login_page
+
+    override fun onAttach(context: Context) {
+        viewModelFactory = MainViewModelFactory(requireContext())
+        super.onAttach(context)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // DataBinding and ViewModel execution
-        executeDataBindingAndViewModel()
+        loginPageBinding =mDataBinding!!
 
-        mDataBinding.loginBtn.setOnClickListener {
+        loginPageBinding.loginBtn.setOnClickListener {
             findNavController().navigate(R.id.action_loginPage_to_listOfInvoices)
         }
     }
 
-    private fun executeDataBindingAndViewModel() {
-        mViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
-        mDataBinding.setVariable(BR.loginViewModel, mViewModel)
-        mDataBinding.lifecycleOwner = this
-        mDataBinding.executePendingBindings()
-    }
+
 
 }
