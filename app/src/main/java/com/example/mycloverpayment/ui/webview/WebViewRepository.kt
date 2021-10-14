@@ -1,4 +1,4 @@
-package com.example.mycloverpayment.webview
+package com.example.mycloverpayment.ui.webview
 
 import android.util.Log
 import com.example.mycloverpayment.carddetails.model.CardTokenErrorResponse

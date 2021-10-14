@@ -1,4 +1,4 @@
-package com.example.mycloverpayment.listofinvoices
+package com.example.mycloverpayment.ui.listofinvoices
 
 import android.accounts.Account
 import android.content.Context

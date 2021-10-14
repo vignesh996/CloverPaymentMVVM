@@ -1,4 +1,4 @@
-package com.example.mycloverpayment.listofinvoices.adapter
+package com.example.mycloverpayment.ui.listofinvoices.adapter
 
 
 import android.graphics.Color

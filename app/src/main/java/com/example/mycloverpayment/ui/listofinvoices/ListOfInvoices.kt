@@ -1,29 +1,24 @@
-package com.example.mycloverpayment.listofinvoices
+package com.example.mycloverpayment.ui.listofinvoices
 
 import android.accounts.Account
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.clover.connector.sdk.v3.PaymentConnector
-import com.clover.sdk.util.CloverAccount
 import com.clover.sdk.v1.Intents
 import com.clover.sdk.v3.connector.ExternalIdUtils
-import com.clover.sdk.v3.inventory.InventoryConnector
 import com.clover.sdk.v3.order.*
 import com.clover.sdk.v3.payments.TipMode
 import com.clover.sdk.v3.remotepay.SaleRequest
@@ -31,11 +26,10 @@ import com.example.mycloverpayment.BR
 import com.example.mycloverpayment.CloverPaymentApp
 import com.example.mycloverpayment.R
 import com.example.mycloverpayment.base.BaseFragment
-import com.example.mycloverpayment.base.BaseViewModel
 import com.example.mycloverpayment.databinding.FragmentListOfInvoicesBinding
 import com.example.mycloverpayment.helper.MainViewModelFactory
 import com.example.mycloverpayment.helper.StaticInvoiceList
-import com.example.mycloverpayment.listofinvoices.adapter.InvoicesAdapter
+import com.example.mycloverpayment.ui.listofinvoices.adapter.InvoicesAdapter
 import com.example.mycloverpayment.model.InvoiceDetail
 import com.example.mycloverpayment.model.PaymentOrder
 import com.example.mycloverpayment.paymentconnector.MyPaymentConnector
@@ -43,7 +37,7 @@ import com.example.mycloverpayment.rxbus.RxBus
 import com.example.mycloverpayment.rxbus.RxBusEvent
 
 
-class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding,ListOfInvoicesViewModel>(),
+class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding, ListOfInvoicesViewModel>(),
         InvoicesAdapter.OnServiceClickListener {
 
     lateinit var listOfInvoicesBinding: FragmentListOfInvoicesBinding
@@ -164,7 +158,7 @@ class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding,ListOfInvoices
     }
 
     private fun manualEntryPage(invoiceDetail: InvoiceDetail) {
-        var action = ListOfInvoicesDirections.actionListOfInvoicesToWebViewFragment22(invoiceDetail)
+        var action  = ListOfInvoicesDirections.actionListOfInvoicesToWebViewFragment22(invoiceDetail)
         findNavController().navigate(action)
     }
 

@@ -5,13 +5,13 @@
     <data>
         <variable
             name="listOfInvoicesViewModel"
-            type="com.example.mycloverpayment.listofinvoices.ListOfInvoicesViewModel" />
+            type="com.example.mycloverpayment.ui.listofinvoices.ListOfInvoicesViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".listofinvoices.ListOfInvoices"
+        tools:context=".ui.listofinvoices.ListOfInvoices"
         android:background="@color/teal_700">
 
 

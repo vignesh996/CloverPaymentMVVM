@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listOfInvoices"
-        android:name="com.example.mycloverpayment.listofinvoices.ListOfInvoices"
+        android:name="com.example.mycloverpayment.ui.listofinvoices.ListOfInvoices"
         android:label="Invoices">
         <action
             android:id="@+id/action_listOfInvoices_to_cardDetails"
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginPage"
-        android:name="com.example.mycloverpayment.login.LoginFragment"
+        android:name="com.example.mycloverpayment.ui.login.LoginFragment"
         android:label="LoginPage" >
         <action
             android:id="@+id/action_loginPage_to_listOfInvoices"
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/webViewFragment2"
-        android:name="com.example.mycloverpayment.webview.WebViewFragment"
+        android:name="com.example.mycloverpayment.ui.webview.WebViewFragment"
         android:label="Payment"
         tools:layout="@layout/fragment_web_view" >
         <argument

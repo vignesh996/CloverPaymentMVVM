@@ -1,8 +1,7 @@
-package com.example.mycloverpayment.webview
+package com.example.mycloverpayment.ui.webview
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.clover.sdk.util.CloverAuth
 import com.example.mycloverpayment.base.BaseViewModel

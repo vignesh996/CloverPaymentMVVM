@@ -1,4 +1,4 @@
-package com.example.mycloverpayment.webview
+package com.example.mycloverpayment.ui.webview
 
 
 import android.content.BroadcastReceiver
@@ -7,22 +7,16 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.clover.sdk.util.CloverAuth
@@ -30,13 +24,9 @@ import com.example.mycloverpayment.BR
 import com.example.mycloverpayment.R
 import com.example.mycloverpayment.base.BaseFragment
 import com.example.mycloverpayment.carddetails.model.CreateCharge
-import com.example.mycloverpayment.databinding.FragmentListOfInvoicesBinding
-import com.example.mycloverpayment.databinding.FragmentLoginPageBinding
 import com.example.mycloverpayment.databinding.FragmentWebViewBinding
 import com.example.mycloverpayment.helper.MainViewModelFactory
 import com.example.mycloverpayment.helper.MyJavaScriptInterface
-import com.example.mycloverpayment.listofinvoices.ListOfInvoicesViewModel
-import com.example.mycloverpayment.login.LoginViewModel
 import com.example.mycloverpayment.model.ApisResponse
 import com.example.mycloverpayment.model.InvoiceDetail
 import com.example.mycloverpayment.rxbus.RxBus
@@ -45,7 +35,6 @@ import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class WebViewFragment : BaseFragment<FragmentWebViewBinding, WebViewViewModel>() {

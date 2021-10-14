@@ -1,4 +1,4 @@
-package com.example.mycloverpayment.listofinvoices
+package com.example.mycloverpayment.ui.listofinvoices
 
 import com.example.mycloverpayment.network.ApiCall
 import retrofit2.HttpException
