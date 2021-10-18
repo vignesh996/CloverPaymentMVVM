@@ -163,11 +163,7 @@ class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding, ListOfInvoice
     }
 
     private fun swipeEntryPage(invoiceDetail: InvoiceDetail) {
-        Toast.makeText(
-            requireContext(),
-            "Swipe Payment option not supported on Android devices",
-            Toast.LENGTH_SHORT
-        ).show()
+       showToast(getString(R.string.swipe_option))
         paymentConnector = MyPaymentConnector(requireContext()).initializePaymentConnector()
         paymentConnector.initializeConnection()
 //        onPaymentClick(invoiceDetail)

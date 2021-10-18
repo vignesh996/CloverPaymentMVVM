@@ -124,7 +124,7 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding, WebViewViewModel>()
             }
 
             override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
-                Toast.makeText(activity, "Got Error! $error", Toast.LENGTH_SHORT).show()
+                showToast("Got Error! $error")
             }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
@@ -163,11 +163,11 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding, WebViewViewModel>()
                     findNavController().navigate(R.id.action_webViewFragment2_to_listOfInvoices)
                     RxBus.publish(RxBusEvent.Result(apiResponse.response.id, apiResponse.response.status, invoiceDetail.position))
                     hideProgressBar()
-                    Toast.makeText(context, "Payment Successfully Paid", Toast.LENGTH_SHORT).show()
+                    showToast(getString(R.string.payment_sucessfull))
                 }
                 is ApisResponse.CustomError -> {
                     hideProgressBar()
-                    Toast.makeText(activity, "${apiResponse.message}", Toast.LENGTH_SHORT).show()
+                    showToast("${apiResponse.message}")
                 }
             }
         })

@@ -7,4 +7,6 @@
     <string name="enter_valid_cvv">Enter Valid CVV</string>
     <string name="enter_valid_month">Enter Valid Month</string>
     <string name="enter_valid_year">Enter Valid Year</string>
+    <string name="swipe_option">Swipe Payment option not supported on Android devices</string>
+    <string name="payment_sucessfull">Payment Successfully Paid</string>
 </resources>
