@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebResourceError
@@ -107,7 +108,6 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding, WebViewViewModel>()
         }
     }
 
-
     private fun loadWebview(url: String) {
 
         webView?.webViewClient = object : WebViewClient() {
@@ -163,11 +163,17 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding, WebViewViewModel>()
                     findNavController().navigate(R.id.action_webViewFragment2_to_listOfInvoices)
                     RxBus.publish(RxBusEvent.Result(apiResponse.response.id, apiResponse.response.status, invoiceDetail.position))
                     hideProgressBar()
-                    showToast(getString(R.string.payment_sucessfull))
+                    getViewModel()?.toastMessage?.value =getString(R.string.payment_sucessfull)
+                    getViewModel()?.toastMessage?.observe(viewLifecycleOwner, Observer {
+                        showToast(it)
+                    })
                 }
                 is ApisResponse.CustomError -> {
                     hideProgressBar()
-                    showToast("${apiResponse.message}")
+                    getViewModel()?.toastMessage?.value = apiResponse.message
+                    getViewModel()?.toastMessage?.observe(viewLifecycleOwner, Observer {
+                        showToast(it)
+                    })
                 }
             }
         })

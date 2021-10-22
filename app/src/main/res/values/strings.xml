@@ -9,4 +9,15 @@
     <string name="enter_valid_year">Enter Valid Year</string>
     <string name="swipe_option">Swipe Payment option not supported on Android devices</string>
     <string name="payment_sucessfull">Payment Successfully Paid</string>
+
+
+
+    <string name="title_close_app">can closee app</string>
+    <string name="message_close_app">message</string>
+    <string name="info_dialog_button_ok">ok to cancel</string>
+    <string name="title_permission">info</string>
+    <string name="message_permission_granted">permission</string>
+    <string name="message_permission_declined">declined</string>
+    <string name="message_permission_declined_do_not_ask">donot ask</string>
+    <string name="can_not_show_dialog_without_argument">can not show dailogue</string>
 </resources>
