@@ -16,25 +16,28 @@ import com.example.mycloverpayment.helper.MainViewModelFactory
 import com.example.mycloverpayment.rxbus.RxBus
 import com.example.mycloverpayment.rxbus.RxBusEvent
 import com.example.mycloverpayment.screens.dialog.DialogManager
+import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.Disposable
+import javax.inject.Inject
 
 
-    class LoginFragment : BaseFragment<FragmentLoginPageBinding, LoginViewModel>() {
+class LoginFragment : BaseFragment<FragmentLoginPageBinding, LoginViewModel>() {
 
     lateinit var loginPageBinding: FragmentLoginPageBinding
-    lateinit var viewModelFactory: MainViewModelFactory
+        @Inject
+        lateinit var factory: ViewModelProvider.Factory
 
 
     override fun getViewModel(): LoginViewModel? =
-            ViewModelProvider(this,  viewModelFactory).get(LoginViewModel::class.java)
+            ViewModelProvider(this, factory).get(LoginViewModel::class.java)
 
     override fun getBindingVariable(): Int = BR.loginViewModel
 
     override fun getContentView(): Int = R.layout.fragment_login_page
 
     override fun onAttach(context: Context) {
-        viewModelFactory = MainViewModelFactory(requireContext())
         super.onAttach(context)
+        AndroidSupportInjection.inject(this)
 
     }
 

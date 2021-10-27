@@ -1,5 +1,6 @@
 package com.example.mycloverpayment.ui.webview
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.liveData
@@ -13,17 +14,18 @@ import com.example.mycloverpayment.rxbus.RxBus
 import com.example.mycloverpayment.rxbus.RxBusEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class WebViewViewModel(var context : Context) : BaseViewModel() {
+class WebViewViewModel @Inject constructor(app: Application) : BaseViewModel(app) {
 
 
 
      suspend fun getCloverAuth(): CloverAuth.AuthResult? {
 
-
         return withContext(Dispatchers.IO) {
             try {
-                return@withContext CloverAuth.authenticate(context.applicationContext)
+//                return@withContext CloverAuth.authenticate(context.applicationContext)
+                return@withContext CloverAuth.authenticate(getApplication())
             } catch (e: Exception) {
                 Log.d("TAG", "Error authenticating", e)
             }

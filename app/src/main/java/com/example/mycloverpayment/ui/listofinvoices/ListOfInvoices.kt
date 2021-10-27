@@ -33,11 +33,13 @@ import com.example.mycloverpayment.model.PaymentOrder
 import com.example.mycloverpayment.rxbus.RxBus
 import com.example.mycloverpayment.rxbus.RxBusEvent
 import com.example.mycloverpayment.screens.dialog.DialogManager
+import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding, ListOfInvoicesViewModel>(),
@@ -47,7 +49,8 @@ class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding, ListOfInvoice
     var adapter = InvoicesAdapter()
     private var mAccount: Account? = null
     private lateinit var paymentConnector: PaymentConnector
-    lateinit var viewModelFactory: MainViewModelFactory
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
     private var invoiceDetail : InvoiceDetail? = null
     private var pressedTime :Long = 0
 
@@ -55,13 +58,13 @@ class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding, ListOfInvoice
     private lateinit var dialogManager: DialogManager
 
     override fun onAttach(context: Context) {
-        viewModelFactory = MainViewModelFactory(requireContext())
         super.onAttach(context)
+        AndroidSupportInjection.inject(this)
 
     }
 
     override fun getViewModel(): ListOfInvoicesViewModel? =
-            ViewModelProvider(this,  viewModelFactory).get(ListOfInvoicesViewModel::class.java)
+            ViewModelProvider(this, factory).get(ListOfInvoicesViewModel::class.java)
 
     override fun getBindingVariable(): Int = BR.listOfInvoicesViewModel
 

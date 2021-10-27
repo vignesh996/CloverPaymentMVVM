@@ -32,10 +32,12 @@ import com.example.mycloverpayment.model.ApisResponse
 import com.example.mycloverpayment.model.InvoiceDetail
 import com.example.mycloverpayment.rxbus.RxBus
 import com.example.mycloverpayment.rxbus.RxBusEvent
+import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 class WebViewFragment : BaseFragment<FragmentWebViewBinding, WebViewViewModel>() {
@@ -46,16 +48,17 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding, WebViewViewModel>()
     private var webView: WebView? = null
     private var authResult: CloverAuth.AuthResult? = null
     private lateinit var dataDisposable: Disposable
-    lateinit var viewModelFactory: MainViewModelFactory
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
 
     override fun onAttach(context: Context) {
-        viewModelFactory = MainViewModelFactory(requireContext())
         super.onAttach(context)
+        AndroidSupportInjection.inject(this)
 
     }
 
     override fun getViewModel(): WebViewViewModel? =
-            ViewModelProvider(this,  viewModelFactory).get(WebViewViewModel::class.java)
+            ViewModelProvider(this, factory).get(WebViewViewModel::class.java)
 
     override fun getBindingVariable(): Int = BR.webViewViewModel
 
