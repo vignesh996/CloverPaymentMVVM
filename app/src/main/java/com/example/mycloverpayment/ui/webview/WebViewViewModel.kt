@@ -20,6 +20,7 @@ class WebViewViewModel(var context : Context) : BaseViewModel() {
 
      suspend fun getCloverAuth(): CloverAuth.AuthResult? {
 
+
         return withContext(Dispatchers.IO) {
             try {
                 return@withContext CloverAuth.authenticate(context.applicationContext)
@@ -29,6 +30,7 @@ class WebViewViewModel(var context : Context) : BaseViewModel() {
             return@withContext null
         }
     }
+
 
     fun createCharge(authToken :String, createCharge: CreateCharge) = liveData(Dispatchers.IO) {
         emit(WebViewRepository().createCharge(authToken,createCharge))

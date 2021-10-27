@@ -19,7 +19,7 @@ import com.example.mycloverpayment.screens.dialog.DialogManager
 import io.reactivex.disposables.Disposable
 
 
-class LoginFragment : BaseFragment<FragmentLoginPageBinding, LoginViewModel>() {
+    class LoginFragment : BaseFragment<FragmentLoginPageBinding, LoginViewModel>() {
 
     lateinit var loginPageBinding: FragmentLoginPageBinding
     lateinit var viewModelFactory: MainViewModelFactory

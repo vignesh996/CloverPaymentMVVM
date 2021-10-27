@@ -49,6 +49,7 @@ class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding, ListOfInvoice
     private lateinit var paymentConnector: PaymentConnector
     lateinit var viewModelFactory: MainViewModelFactory
     private var invoiceDetail : InvoiceDetail? = null
+    private var pressedTime :Long = 0
 
     private lateinit var dialogDisposable: Disposable
     private lateinit var dialogManager: DialogManager
@@ -73,7 +74,13 @@ class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding, ListOfInvoice
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            requireActivity().finish()
+            if (pressedTime + 1000 > System.currentTimeMillis()) {
+                requireActivity().finish()
+            }
+            else {
+                showToast("Press back again to exit")
+            }
+            pressedTime = System.currentTimeMillis()
         }
     }
 
