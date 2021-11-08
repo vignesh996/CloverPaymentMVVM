@@ -9,9 +9,11 @@ import com.example.mycloverpayment.model.ApisResponse
 import com.google.gson.Gson
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
-class WebViewRepository {
+class WebViewRepository @Inject constructor(){
 
+    // Method for Make Payments
     suspend fun createCharge(authToken :String, createCharge: CreateCharge)  : ApisResponse<CreateChargeResponse> {
 
         return try {
@@ -20,18 +22,18 @@ class WebViewRepository {
         } catch (e: HttpException) {
             ApisResponse.Error(e)
             val errorMessage = errorMessagefromapi(e)
-            Log.d("TAG", "createCharge: ${errorMessage}")
+            Log.d("TAG", "createCharge: $errorMessage")
             ApisResponse.CustomError(errorMessage!!)
 
         }
     }
 
+    // Method for Getting Charge Api Error Body Response
     private fun errorMessagefromapi(httpException: HttpException): String? {
         var errorMessage: String? = null
         val error = httpException.response()?.errorBody()
 
         try {
-
             val adapter = Gson().getAdapter(CardTokenErrorResponse::class.java)
             val errorParser = adapter.fromJson(error?.string())
             errorMessage = errorParser.error.message

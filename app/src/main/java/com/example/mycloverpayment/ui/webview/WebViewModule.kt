@@ -8,6 +8,7 @@ import dagger.Provides
 @Module
 class WebViewModule {
 
+    // WebViewViewModel Factory provider
     @Provides
     fun provideViewModelProvider(viewModel: WebViewViewModel): ViewModelProvider.Factory {
         return ViewModelProviderFactory(viewModel)

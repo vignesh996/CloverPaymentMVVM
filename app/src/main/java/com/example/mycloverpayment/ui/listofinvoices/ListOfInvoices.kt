@@ -46,7 +46,8 @@ class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding, ListOfInvoice
         InvoicesAdapter.OnServiceClickListener {
 
     lateinit var listOfInvoicesBinding: FragmentListOfInvoicesBinding
-    var adapter = InvoicesAdapter()
+    @Inject
+    lateinit var adapter: InvoicesAdapter
     private var mAccount: Account? = null
     private lateinit var paymentConnector: PaymentConnector
     @Inject
@@ -76,12 +77,13 @@ class ListOfInvoices : BaseFragment<FragmentListOfInvoicesBinding, ListOfInvoice
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Method for restrict user back button
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (pressedTime + 1000 > System.currentTimeMillis()) {
                 requireActivity().finish()
             }
             else {
-                showToast("Press back again to exit")
+                showToast(getString(R.string.Press_back_again_to_exit))
             }
             pressedTime = System.currentTimeMillis()
         }

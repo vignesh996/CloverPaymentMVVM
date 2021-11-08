@@ -9,6 +9,7 @@ import dagger.Provides
 @Module
 class ListOfInvoicesModule {
 
+    // ListOfInvoicesViewModel Factory provider
     @Provides
     fun provideViewModelProvider(viewModel: ListOfInvoicesViewModel): ViewModelProvider.Factory {
         return ViewModelProviderFactory(viewModel)

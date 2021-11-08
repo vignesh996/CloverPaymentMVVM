@@ -16,10 +16,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class WebViewViewModel @Inject constructor(app: Application) : BaseViewModel(app) {
+class WebViewViewModel @Inject constructor(private val webViewRepository: WebViewRepository,
+                                           app: Application) : BaseViewModel(app) {
 
 
-
+    //  Method for Getting Runtime Merchant's Clover Authentication
      suspend fun getCloverAuth(): CloverAuth.AuthResult? {
 
         return withContext(Dispatchers.IO) {
@@ -33,9 +34,9 @@ class WebViewViewModel @Inject constructor(app: Application) : BaseViewModel(app
         }
     }
 
-
+    // Method for Make Payments
     fun createCharge(authToken :String, createCharge: CreateCharge) = liveData(Dispatchers.IO) {
-        emit(WebViewRepository().createCharge(authToken,createCharge))
+        emit(webViewRepository.createCharge(authToken,createCharge))
     }
 
 }

@@ -10,8 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mycloverpayment.R
 import com.example.mycloverpayment.model.PaymentOrder
+import javax.inject.Inject
 
-class InvoicesAdapter : RecyclerView.Adapter<InvoicesAdapter.InvoiceViewHolder>() {
+class InvoicesAdapter @Inject constructor(): RecyclerView.Adapter<InvoicesAdapter.InvoiceViewHolder>() {
 
     private var invoiceList = ArrayList<PaymentOrder>()
     private var onClickListener: OnServiceClickListener? = null

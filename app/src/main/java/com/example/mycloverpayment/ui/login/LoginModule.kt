@@ -8,6 +8,7 @@ import dagger.Provides
 @Module
 class LoginModule {
 
+    // LoginViewModel Factory provider
     @Provides
     fun provideViewModelProvider(viewModel: LoginViewModel): ViewModelProvider.Factory {
         return ViewModelProviderFactory(viewModel)

@@ -20,4 +20,5 @@
     <string name="message_permission_declined">declined</string>
     <string name="message_permission_declined_do_not_ask">donot ask</string>
     <string name="can_not_show_dialog_without_argument">can not show dailogue</string>
+    <string name="Press_back_again_to_exit">Press back again to exit</string>
 </resources>
