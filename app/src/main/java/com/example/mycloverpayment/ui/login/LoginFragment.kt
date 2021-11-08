@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 class LoginFragment : BaseFragment<FragmentLoginPageBinding, LoginViewModel>() {
 
-    lateinit var loginPageBinding: FragmentLoginPageBinding
+        lateinit var loginPageBinding: FragmentLoginPageBinding
         @Inject
         lateinit var factory: ViewModelProvider.Factory
 
